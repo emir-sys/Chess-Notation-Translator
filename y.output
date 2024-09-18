@@ -1,0 +1,386 @@
+   0  $accept : lines $end
+
+   1  lines : line lines
+   2        | line
+
+   3  $$1 :
+
+   4  $$2 :
+
+   5  $$3 :
+
+   6  line : MOVENUM $$1 DOT $$2 move_line $$3 move_line
+
+   7  $$4 :
+
+   8  $$5 :
+
+   9  $$6 :
+
+  10  move_line : piece PLACE $$4 CAPTURES $$5 piece PLACE $$6 checkstatus
+
+  11  $$7 :
+
+  12  $$8 :
+
+  13  $$9 :
+
+  14  move_line : piece PLACE $$7 MOVES $$8 PLACE $$9 checkstatus
+  15            | castles checkstatus
+
+  16  castles : CASTLESKINGSIDE
+  17          | CASTLESQUEENSIDE
+
+  18  piece : KING
+  19        | QUEEN
+  20        | ROOK
+  21        | BISHOP
+  22        | KNIGHT
+  23        |
+
+  24  checkstatus : CHECK
+  25              | CHECKMATE
+  26              |
+
+state 0
+	$accept : . lines $end  (0)
+
+	MOVENUM  shift 1
+	.  error
+
+	lines  goto 2
+	line  goto 3
+
+
+state 1
+	line : MOVENUM . $$1 DOT $$2 move_line $$3 move_line  (6)
+	$$1 : .  (3)
+
+	.  reduce 3
+
+	$$1  goto 4
+
+
+state 2
+	$accept : lines . $end  (0)
+
+	$end  accept
+
+
+state 3
+	lines : line . lines  (1)
+	lines : line .  (2)
+
+	MOVENUM  shift 1
+	$end  reduce 2
+
+	lines  goto 5
+	line  goto 3
+
+
+state 4
+	line : MOVENUM $$1 . DOT $$2 move_line $$3 move_line  (6)
+
+	DOT  shift 6
+	.  error
+
+
+state 5
+	lines : line lines .  (1)
+
+	.  reduce 1
+
+
+state 6
+	line : MOVENUM $$1 DOT . $$2 move_line $$3 move_line  (6)
+	$$2 : .  (4)
+
+	.  reduce 4
+
+	$$2  goto 7
+
+
+state 7
+	line : MOVENUM $$1 DOT $$2 . move_line $$3 move_line  (6)
+	piece : .  (23)
+
+	KING  shift 8
+	QUEEN  shift 9
+	ROOK  shift 10
+	BISHOP  shift 11
+	KNIGHT  shift 12
+	CASTLESKINGSIDE  shift 13
+	CASTLESQUEENSIDE  shift 14
+	PLACE  reduce 23
+
+	move_line  goto 15
+	piece  goto 16
+	castles  goto 17
+
+
+state 8
+	piece : KING .  (18)
+
+	.  reduce 18
+
+
+state 9
+	piece : QUEEN .  (19)
+
+	.  reduce 19
+
+
+state 10
+	piece : ROOK .  (20)
+
+	.  reduce 20
+
+
+state 11
+	piece : BISHOP .  (21)
+
+	.  reduce 21
+
+
+state 12
+	piece : KNIGHT .  (22)
+
+	.  reduce 22
+
+
+state 13
+	castles : CASTLESKINGSIDE .  (16)
+
+	.  reduce 16
+
+
+state 14
+	castles : CASTLESQUEENSIDE .  (17)
+
+	.  reduce 17
+
+
+state 15
+	line : MOVENUM $$1 DOT $$2 move_line . $$3 move_line  (6)
+	$$3 : .  (5)
+
+	.  reduce 5
+
+	$$3  goto 18
+
+
+state 16
+	move_line : piece . PLACE $$4 CAPTURES $$5 piece PLACE $$6 checkstatus  (10)
+	move_line : piece . PLACE $$7 MOVES $$8 PLACE $$9 checkstatus  (14)
+
+	PLACE  shift 19
+	.  error
+
+
+state 17
+	move_line : castles . checkstatus  (15)
+	checkstatus : .  (26)
+
+	CHECK  shift 20
+	CHECKMATE  shift 21
+	$end  reduce 26
+	MOVENUM  reduce 26
+	PLACE  reduce 26
+	KING  reduce 26
+	QUEEN  reduce 26
+	ROOK  reduce 26
+	BISHOP  reduce 26
+	KNIGHT  reduce 26
+	CASTLESKINGSIDE  reduce 26
+	CASTLESQUEENSIDE  reduce 26
+
+	checkstatus  goto 22
+
+
+state 18
+	line : MOVENUM $$1 DOT $$2 move_line $$3 . move_line  (6)
+	piece : .  (23)
+
+	KING  shift 8
+	QUEEN  shift 9
+	ROOK  shift 10
+	BISHOP  shift 11
+	KNIGHT  shift 12
+	CASTLESKINGSIDE  shift 13
+	CASTLESQUEENSIDE  shift 14
+	PLACE  reduce 23
+
+	move_line  goto 23
+	piece  goto 16
+	castles  goto 17
+
+
+state 19
+	move_line : piece PLACE . $$4 CAPTURES $$5 piece PLACE $$6 checkstatus  (10)
+	move_line : piece PLACE . $$7 MOVES $$8 PLACE $$9 checkstatus  (14)
+	$$4 : .  (7)
+	$$7 : .  (11)
+
+	CAPTURES  reduce 7
+	MOVES  reduce 11
+
+	$$4  goto 24
+	$$7  goto 25
+
+
+state 20
+	checkstatus : CHECK .  (24)
+
+	.  reduce 24
+
+
+state 21
+	checkstatus : CHECKMATE .  (25)
+
+	.  reduce 25
+
+
+state 22
+	move_line : castles checkstatus .  (15)
+
+	.  reduce 15
+
+
+state 23
+	line : MOVENUM $$1 DOT $$2 move_line $$3 move_line .  (6)
+
+	.  reduce 6
+
+
+state 24
+	move_line : piece PLACE $$4 . CAPTURES $$5 piece PLACE $$6 checkstatus  (10)
+
+	CAPTURES  shift 26
+	.  error
+
+
+state 25
+	move_line : piece PLACE $$7 . MOVES $$8 PLACE $$9 checkstatus  (14)
+
+	MOVES  shift 27
+	.  error
+
+
+state 26
+	move_line : piece PLACE $$4 CAPTURES . $$5 piece PLACE $$6 checkstatus  (10)
+	$$5 : .  (8)
+
+	.  reduce 8
+
+	$$5  goto 28
+
+
+state 27
+	move_line : piece PLACE $$7 MOVES . $$8 PLACE $$9 checkstatus  (14)
+	$$8 : .  (12)
+
+	.  reduce 12
+
+	$$8  goto 29
+
+
+state 28
+	move_line : piece PLACE $$4 CAPTURES $$5 . piece PLACE $$6 checkstatus  (10)
+	piece : .  (23)
+
+	KING  shift 8
+	QUEEN  shift 9
+	ROOK  shift 10
+	BISHOP  shift 11
+	KNIGHT  shift 12
+	PLACE  reduce 23
+
+	piece  goto 30
+
+
+state 29
+	move_line : piece PLACE $$7 MOVES $$8 . PLACE $$9 checkstatus  (14)
+
+	PLACE  shift 31
+	.  error
+
+
+state 30
+	move_line : piece PLACE $$4 CAPTURES $$5 piece . PLACE $$6 checkstatus  (10)
+
+	PLACE  shift 32
+	.  error
+
+
+state 31
+	move_line : piece PLACE $$7 MOVES $$8 PLACE . $$9 checkstatus  (14)
+	$$9 : .  (13)
+
+	.  reduce 13
+
+	$$9  goto 33
+
+
+state 32
+	move_line : piece PLACE $$4 CAPTURES $$5 piece PLACE . $$6 checkstatus  (10)
+	$$6 : .  (9)
+
+	.  reduce 9
+
+	$$6  goto 34
+
+
+state 33
+	move_line : piece PLACE $$7 MOVES $$8 PLACE $$9 . checkstatus  (14)
+	checkstatus : .  (26)
+
+	CHECK  shift 20
+	CHECKMATE  shift 21
+	$end  reduce 26
+	MOVENUM  reduce 26
+	PLACE  reduce 26
+	KING  reduce 26
+	QUEEN  reduce 26
+	ROOK  reduce 26
+	BISHOP  reduce 26
+	KNIGHT  reduce 26
+	CASTLESKINGSIDE  reduce 26
+	CASTLESQUEENSIDE  reduce 26
+
+	checkstatus  goto 35
+
+
+state 34
+	move_line : piece PLACE $$4 CAPTURES $$5 piece PLACE $$6 . checkstatus  (10)
+	checkstatus : .  (26)
+
+	CHECK  shift 20
+	CHECKMATE  shift 21
+	$end  reduce 26
+	MOVENUM  reduce 26
+	PLACE  reduce 26
+	KING  reduce 26
+	QUEEN  reduce 26
+	ROOK  reduce 26
+	BISHOP  reduce 26
+	KNIGHT  reduce 26
+	CASTLESKINGSIDE  reduce 26
+	CASTLESQUEENSIDE  reduce 26
+
+	checkstatus  goto 36
+
+
+state 35
+	move_line : piece PLACE $$7 MOVES $$8 PLACE $$9 checkstatus .  (14)
+
+	.  reduce 14
+
+
+state 36
+	move_line : piece PLACE $$4 CAPTURES $$5 piece PLACE $$6 checkstatus .  (10)
+
+	.  reduce 10
+
+
+16 terminals, 16 nonterminals
+27 grammar rules, 37 states

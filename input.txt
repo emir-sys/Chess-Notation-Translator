@@ -1,0 +1,8 @@
+1. e2-e4 e7-e5 
+2. Ng1-f3 Ng8-f6 
+3. Nf3xe5 d7-d6 
+4. Ne5-f3 Nf6xe4 
+5. d2-d4 d6-d5 
+6. Bf1-d3 Nb8-c6 
+7. O-O Bc8-g4 
+8. Na4-a6#

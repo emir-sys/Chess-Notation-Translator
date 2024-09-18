@@ -1,0 +1,21 @@
+move 1
+The white pawn on e2 moves to e4. 
+The black pawn on e7 moves to e5. 
+move 2
+The white knight on g1 moves to f3. 
+The black knight on g8 moves to f6. 
+move 3
+The white knight on f3 takes the pawn on e5. 
+The black pawn on d7 moves to d6. 
+move 4
+The white knight on e5 moves to f3. 
+The black knight on f6 takes the pawn on e4. 
+move 5
+The white pawn on d2 moves to d4. 
+The black pawn on d6 moves to d5. 
+move 6
+The white bishop on f1 moves to d3. 
+The black knight on b8 moves to c6. 
+move 7
+The white is castling to King’s side
+The black bishop on c8 moves to g4. 
